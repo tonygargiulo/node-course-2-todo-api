@@ -36,16 +36,6 @@ app.get('/todos', (req, res) => {
 app.get('/todos/:id', (req, res) => {
   var id = req.params.id;
 
-
-  // validate id using isValid
-    // 404 - send back empty body
-
-  // findById
-    // success
-      // if todo - send it back
-      // if no todo - send back 404 with empty body
-    // error
-      // 400 -
     if (ObjectID.isValid(id)) {
       id = new ObjectID(id);
       Todo.findById(id).then((todo) => {
@@ -64,7 +54,30 @@ app.get('/todos/:id', (req, res) => {
 
 });
 
+app.delete('/todos/:id', (req, res) => {
+  // get id
+  var id = req.params.id;
 
+  // validate id -> not valid? 404
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send();
+  }
+
+  Todo.findByIdAndRemove(id).then((doc) => {
+    if (!doc) {
+      return res.status(404).send();
+    }
+
+    res.status(200).send(doc);
+  }).catch((e) => {
+    res.status(400).send();
+  })
+  // remove todo by id
+    // success -> if no doc, send 404 with empty body
+                  // if doc, 200
+    // error -> 400 with empty body
+
+});
 
 
 
