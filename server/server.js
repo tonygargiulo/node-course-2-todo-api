@@ -79,6 +79,7 @@ app.patch('/todos/:id',(req, res) => {
   var id = req.params.id;
   // pick pulls the 'text' and 'completed' props off the req.body obj
   var body = _.pick(req.body, ['text', 'completed']);
+  
 
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
