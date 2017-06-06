@@ -10,8 +10,8 @@ var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
 var app = express();
-const port = process.env.PORT;
-
+const port = process.env.PORT || 3000;
+console.log(port);
 
 app.use(bodyParser.json());
 
@@ -106,7 +106,20 @@ app.patch('/todos/:id',(req, res) => {
 
 });
 
+app.post('/users', (req, res) => {
+  var body = _.pick(req.body, ['email', 'password']);
+  var user = new User(body);
 
+  user.save().then(() => {
+    return user.generateAuthToken();
+    // res.send(user);
+  }).then((token) => {
+    res.header('x-auth', token).send(user);
+  }).catch((e) => {
+    res.status(400).send(e);
+  })
+
+});
 
 
 
