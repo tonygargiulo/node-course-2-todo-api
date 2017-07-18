@@ -15,6 +15,7 @@ const users = [{
     token: jwt.sign({_id: userOneId, access: 'auth'},'abc123').toString()
   }]
 }, {
+  _id: userTwoId,
   email: 'tony@gargiulo.com',
   password: 'secondUserPass'
 }];
